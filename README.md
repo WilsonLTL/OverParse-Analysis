@@ -10,6 +10,7 @@ Warning: This tool violates the PSO2 Terms of Service. Please use caution and di
 <br >
 Overparse collection is designed to measure your own combat power and benign competition. All vicious behaviors are shameful and disrespectful to all developers and data contributors. <br >
 Overparse系列是專門用來衡量自己的戰力和良性競爭所使用, 一切惡性行為是可恥和對所有開發者與資料貢獻者的不尊重. <br >
+<br >
 Overparse analysis develop basic on [OverParse/TyroneSama](https://github.com/TyroneSama/OverParse) and [OverParse/Remon-7L](https://github.com/Remon-7L/OverParse), base on Vue(front) and Python(back), provide more information about each battle and data visualization. <br >
 <br >
 Overparse analysis建基於[OverParse/TyroneSama](https://github.com/TyroneSama/OverParse) 與 [OverParse/Remon-7L](https://github.com/Remon-7L/OverParse), 以 Vue (前端) 與 Python (後端)建設,針對每場戰鬥, 提供更多可用資料分析與數據視像化 <br >
@@ -29,7 +30,7 @@ Overparse analysis建基於[OverParse/TyroneSama](https://github.com/TyroneSama/
 ## Function:<br >
 ```
 1.DPS visualization
-2.DPP visualization
+2.DPP visualization (developing)
 3.Critical strike rate visualization
 4.JA rate visualization
 5.Team damage visualization
@@ -41,7 +42,7 @@ Overparse analysis建基於[OverParse/TyroneSama](https://github.com/TyroneSama/
 ## 提供功能:<br >
 ```
 1.DPS視像化
-2.DPP視像化
+2.DPP視像化 (developing)
 3.爆擊率視像化
 4.JA率視像化
 5.團隊傷害視像化
@@ -49,3 +50,6 @@ Overparse analysis建基於[OverParse/TyroneSama](https://github.com/TyroneSama/
 7.戰鬥時軸視像化
 8.分享記錄
 ```
+
+## User guideline
+## 教學
