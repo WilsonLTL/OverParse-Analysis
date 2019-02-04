@@ -384,36 +384,14 @@
         },
         data: ()=> ({
             back_end_url:"http://ec2-13-250-36-42.ap-southeast-1.compute.amazonaws.com:5000",
-            play_status:true,
-            stop_status:false,
-            reset_status:true,
-            select_time_status:false,
-            totalTime:0,
-            calcu_dialog_status:false,
-            process_status:false,
-            csv_text:"",
-            snackbar_status:false,
-            file: "",
-            snackbar_text:"",
-            fileName: "",
-            init_setting_status: true,
-            change_target_player_status: false,
-            datacollection: null,
-            checking: false,
-            record_id: "",
             battle_time:"-",
-            dps: [0],
-            japer: [0],
-            criper: [0],
-            ppper: [0],
-            player_list: [],
             barchartOptions: {
                 bar_color: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D10CE8', '#9E9D24', '#D10CE8', '#D10CE8', '#D10CE8'],
                 chart: {
                     height: 700,
                     type: 'bar',
                     foreColor: "#fff",
-                                    // sparkline: {
+                    // sparkline: {
                     //     enabled: true,
                     // },
                 },tooltip: {
@@ -441,10 +419,16 @@
                 dataLabels: {
                     enabled: false,
                 }
-        },
+            },
             barseries: [{
                 data: [0,0,0,0,0,0,0,0,0,0,0,0,0]
             }],
+            calcu_dialog_status:false,
+            checking: false,
+            change_target_player_status: false,
+            criper: [0],
+            csv_text:"",
+            datacollection: null,
             donutchartOptions: {
                 chart:{
                     foreColor: "#fff",
@@ -462,8 +446,14 @@
                 },
                 labels: [],
                 width: 380,
-        },
+            },
             donutseries: [0],
+            dps: [0],
+            end_time:0,
+            file: "",
+            fileName: "",
+            init_setting_status: false,
+            japer: [0],
             linechartOptions: {
                 chart: {
                     height: 350,
@@ -533,21 +523,31 @@
                     },
                 },
 
-        },
+            },
             lineseries: {
-            name: 'DPS',
-            data: [0]
-        },
-            target_player_name: "",
+                name: 'DPS',
+                data: [0]
+            },
+            play_status:true,
+            process_status:false,
+            player_list: [],
+            ppper: [0],
+            record_id: "",
+            reset_status:true,
+            return_data: "",
+            stop_status:false,
+            select_time_status:false,
+            snackbar_status:false,
+            snackbar_text:"",
             skill_language_list: ["English", "繁體中文", "日本語"],
             skill_language: "",
             snackbac_color:"",
             start_time:0,
-            end_time:0,
-            return_data: "",
-            time: null,
             select_start_time: false,
-            select_end_time: false
+            select_end_time: false,
+            totalTime:0,
+            target_player_name: "",
+            time: null,
         }),
         mounted () {
             this.fillData()
@@ -671,6 +671,7 @@
                 this.snackbar_text = text
             },
             create_new_record () {
+                console.log("Create")
                 let textType = /text.*/;
                 let language = this.skill_language;
                 let target_name = this.target_player_name
@@ -683,7 +684,7 @@
                             "language":language,
                             "target_name":target_name
                         };
-                        axios.post(this.backend_url+"/create_new_record",result).then((res) => {
+                        axios.post(this.back_end_url+"/create_new_record",result).then((res) => {
                             this.init_setting_status = false;
                             this.process_status = false;
                             this.calcu_dialog_status = true;
@@ -720,7 +721,7 @@
                         "end_time":this.end_time,
                         "target_name":target_name
                     };
-                    axios.post(this.backend_url+"/caclu",result).then((res) => {
+                    axios.post(this.back_end_url+"/caclu",result).then((res) => {
                         this.redraw(res);
                         this.process_status = false;
                         this.calcu_dialog_status = false;

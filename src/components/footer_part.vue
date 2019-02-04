@@ -14,7 +14,7 @@
         <v-card class="flex" flat tile>
             <v-card-title class="darken-3">
                 <strong class="subheading">&copy;2019 — <strong>WilsonLTL</strong></strong>
-                <v-btn v-for="icon in icons" :key="icon" class="mx-3" href="https://github.com" dark icon>
+                <v-btn v-for="icon in icons" :key="icon" class="mx-3" href="https://github.com/WilsonLTL/Overparse-analysis" dark icon>
                     <v-icon size="24px">{{ icon }}</v-icon>
                 </v-btn>
             </v-card-title>
