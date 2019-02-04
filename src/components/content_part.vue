@@ -23,25 +23,23 @@
                             <v-card-title>
                                 <span class="headline white--text">Start your record</span>
                             </v-card-title>
-                            <v-card flat color="#1b213b">
-                                <v-card-text>
-                                    <v-text-field outline dark label="Select csv" v-on:click='pickFile' v-model='fileName' prepend-icon='attach_file'></v-text-field>
-                                    <input type="file" style="display: none" ref="image" accept="csv/*" v-on:change="onFilePicked">
-                                    <v-select dark v-model="skill_language" :items="skill_language_list" label="Language" prepend-icon='fas fa-language' outline></v-select>
-                                    <v-text-field outline dark label="Your Character Name" v-model='target_player_name' prepend-icon='fas fa-smile-wink'></v-text-field>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="primary" flat v-on:click="create_new_record">Submit</v-btn>
-                                </v-card-actions>
-                            </v-card>
+                            <v-card-text>
+                                <v-text-field outline dark label="Select csv" v-on:click='pickFile' v-model='fileName' prepend-icon='attach_file'></v-text-field>
+                                <input type="file" style="display: none" ref="image" accept="csv/*" v-on:change="onFilePicked">
+                                <v-select dark v-model="skill_language" :items="skill_language_list" label="Language" prepend-icon='fas fa-language' outline></v-select>
+                                <v-text-field outline dark label="Your Character Name" v-model='target_player_name' prepend-icon='fas fa-smile-wink'></v-text-field>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" flat v-on:click="create_new_record">Submit</v-btn>
+                            </v-card-actions>
                         </v-card>
                     </v-dialog>
 
-                    <v-dialog v-model="init_setting_status" persistent width="800">
+                    <v-dialog v-model="init_setting_status" width="800">
                         <v-card style="background-color: #1b213b">
                             <v-card-title>
-                                <span class="headline white--text">User Profile</span>
+                                <span class="headline white--text">Record Init</span>
                             </v-card-title>
                             <v-card-text>
                                 <v-tabs dark centered color="#1b213b" show-arrows>
@@ -87,6 +85,10 @@
                                                         <v-btn fab dark large color="green" v-on:click="resetTimer" v-else disabled>
                                                             <v-icon dark>fas fa-redo</v-icon>
                                                         </v-btn>
+
+                                                        <v-btn fab dark large color="orange" v-on:click="select_time_status = true">
+                                                            <v-icon dark>fas fa-mouse-pointer</v-icon>
+                                                        </v-btn>
                                                     </v-flex>
                                                 </v-card-text>
                                             </v-card>
@@ -95,8 +97,8 @@
                                             <v-card flat color="#1b213b">
                                                 <v-card-text>
                                                     <v-flex xs12>
-                                                        <v-text-field v-model="record_id" dark label="Outline" placeholder="Your record ID" outline
-                                                        ></v-text-field>
+                                                        <v-text-field v-model="record_id" dark label="Your record ID" placeholder="Your record ID" outline></v-text-field>
+                                                        <v-text-field v-model="target_player_name" dark label="Your character name" placeholder="Your character name" outline></v-text-field>
                                                     </v-flex>
                                                 </v-card-text>
                                                 <v-card-actions>
@@ -109,6 +111,41 @@
                                 </v-tabs>
                             </v-card-text>
 
+                        </v-card>
+                    </v-dialog>
+
+                    <v-dialog v-model="select_time_status" width="300" >
+                        <v-card flat color="#1b213b">
+                            <v-card-title>
+                                <span class="headline white--text">Select the time</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-flex xs12>
+                                    <v-dialog ref="select_start_time" v-model="select_start_time" :return-value.sync="start_time" persistent lazy full-width width="290px">
+                                        <v-text-field dark slot="activator" v-model="start_time" label="Mission Start Time" prepend-icon="access_time" readonly></v-text-field>
+                                        <v-time-picker color="#1b213b" v-if="select_start_time" v-model="start_time" full-width>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat color="primary" @click="select_start_time = false">Cancel</v-btn>
+                                            <v-btn flat color="primary" @click="save_start_time">OK</v-btn>
+                                        </v-time-picker>
+                                    </v-dialog>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-dialog ref="select_end_time" v-model="select_end_time" :return-value.sync="end_time" persistent lazy full-width width="290px">
+                                        <v-text-field dark slot="activator" v-model="end_time" label="Mission End Time" prepend-icon="access_time" readonly></v-text-field>
+                                        <v-time-picker color="#1b213b" v-if="select_end_time" v-model="end_time" full-width>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat color="primary" @click="select_end_time = false">Cancel</v-btn>
+                                            <v-btn flat color="primary" @click="save_end_time">OK</v-btn>
+                                        </v-time-picker>
+                                    </v-dialog>
+                                </v-flex>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="white" flat v-on:click="select_time_status = false">Cancel</v-btn>
+                                <v-btn color="primary" flat v-on:click="cal_time">Submit</v-btn>
+                            </v-card-actions>
                         </v-card>
                     </v-dialog>
 
@@ -229,7 +266,7 @@
                     </v-flex>
 
                     <v-flex xs12 sm12 md6 xl6>
-                        <v-card class="mx-auto" color="#262d47" max-width="1000" height="500">
+                        <v-card class="mx-auto" color="#262d47" max-width="1000" height="515">
                             <v-card-title>
                                 <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-5" size="64" @click="takePulse">
                                     <!--fas fa-code-branch-->
@@ -251,7 +288,7 @@
                     </v-flex>
 
                     <v-flex xs12 sm12 md6 xl6>
-                        <v-card class="mx-auto" color="#262d47" max-width="600" max-height="500">
+                        <v-card class="mx-auto" color="#262d47" max-width="600" max-height="515">
                             <v-card-title>
                                 <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-5" size="64" @click="takePulse">
                                     <!--fab fa-phoenix-framework-->
@@ -349,6 +386,7 @@
             play_status:true,
             stop_status:false,
             reset_status:true,
+            select_time_status:false,
             totalTime:0,
             calcu_dialog_status:false,
             process_status:false,
@@ -438,6 +476,9 @@
                 grid: {
                     borderColor: "#40475D"
                 },
+                dataLabels: {
+                    enabled: false,
+                },
                 xaxis: {
                     type: 'category',
                     labels: {
@@ -496,13 +537,16 @@
             name: 'DPS',
             data: [0]
         },
-            target_player_name: "緋炎",
+            target_player_name: "",
             skill_language_list: ["English", "繁體中文", "日本語"],
             skill_language: "",
             snackbac_color:"",
             start_time:0,
             end_time:0,
             return_data: "",
+            time: null,
+            select_start_time: false,
+            select_end_time: false
         }),
         mounted () {
             this.fillData()
@@ -556,13 +600,33 @@
                 this.process_status = true;
                 axios.post("http://79cc3a77.ngrok.io/exist_record",req_val).then((res) => {
                     if (res.data["status"] === true){
-                        this.process_status = false;
                         this.init_setting_status = false;
                         this.redraw(res)
                     }else{
                         this.snackbar_contorl(true,"error","The record ID is not exist")
                     }
+                    this.process_status = false;
                 })
+            },
+            save_start_time: function() {
+                this.$refs.select_start_time.save(this.start_time);
+                this.select_start_time = false;
+            },
+            save_end_time: function() {
+                this.$refs.select_end_time.save(this.end_time);
+                this.select_end_time = false;
+            },
+            cal_time: function() {
+                this.select_start_time = false;
+                this.select_end_time = false;
+
+                this.$refs.select_end_time.save(this.end_time);
+                let now = new Date()
+                let start_time = new Date(now.getFullYear(),now.getMonth(),now.getDate(),this.start_time.split(":")[0],this.start_time.split(":")[1],0)
+                let end_time = new Date(now.getFullYear(),now.getMonth(),now.getDate(),this.end_time.split(":")[0],this.end_time.split(":")[1],0)
+                this.start_time = Math.floor(start_time.getTime() / 1000);
+                this.end_time = Math.floor(end_time.getTime() / 1000);
+                this.calcu_dialog_status = true
             },
             startTimer: function() {
                 this.timer = setInterval(() => this.countup(), 1000);
@@ -611,62 +675,63 @@
                 let target_name = this.target_player_name
                 this.process_status = true;
                 try{
-                    if (this.file.type.match(textType)) {
-                        let reader = new FileReader();
-                        reader.onload = function (e) {
-                            let result = {
-                                'data':reader.result.toString(),
-                                "language":language,
-                                "target_name":target_name
-                            };
-                            axios.post("http://79cc3a77.ngrok.io/create_new_record",result).then((res) => {
-                                this.init_setting_status = false;
-                                this.process_status = false;
-                                this.calcu_dialog_status = true;
-                                this.record_id = res.data["ID"]
-                                this.snackbar_contorl(true,"success","New record create success")
-                                this.cal_new_record()
-                            });
-                        }.bind(this);
-                        reader.readAsText(this.file);
-                    }else{
-                        this.snackbar_contorl(true,"error","Please select the .csv file")
-                    }
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        let result = {
+                            'data':reader.result.toString(),
+                            "language":language,
+                            "target_name":target_name
+                        };
+                        axios.post("http://79cc3a77.ngrok.io/create_new_record",result).then((res) => {
+                            this.init_setting_status = false;
+                            this.process_status = false;
+                            this.calcu_dialog_status = true;
+                            this.record_id = res.data["ID"]
+                            this.snackbar_contorl(true,"success","New record create success")
+                            this.cal_new_record()
+                        });
+                    }.bind(this);
+                    reader.readAsText(this.file);
+                    // if (this.file.type.match(textType)) {
+                    //
+                    // }else{
+                    //     this.snackbar_contorl(true,"error","Please select the .csv file")
+                    // }
 
                 }catch (err) {
-                    this.snackbar_contorl(true,"error","Please select the .csv file")
+                    console.log(err)
+                    this.process_status = false;
+                    this.snackbar_contorl(true,"error","Exception: "+err)
                 }
 
             },
             cal_new_record () {
-                let textType = /text.*/;
+                console.log("Enter")
+                // let textType = /text.*/;
                 let language = this.skill_language;
                 let target_name = this.target_player_name
                 this.process_status = true;
                 try{
-                    if (this.file.type.match(textType)) {
-                        let reader = new FileReader();
-                        reader.onload = function (e) {
-                            let result = {
-                                'id':this.record_id,
-                                'data':reader.result.toString(),
-                                "language":language,
-                                "start_time":this.start_time,
-                                "end_time":this.end_time,
-                                "target_name":target_name
-                            };
-                            axios.post("http://79cc3a77.ngrok.io/caclu",result).then((res) => {
-                                this.redraw(res);
-                                this.process_status = false;
-                                this.calcu_dialog_status = false;
-                            });
-                        }.bind(this);
-                        reader.readAsText(this.file);
-                    }else{
-                        this.snackbar_contorl(true,"error","Please select the .csv file")
-                    }
+                    let result = {
+                        'id':this.record_id,
+                        "language":language,
+                        "start_time":this.start_time,
+                        "end_time":this.end_time,
+                        "target_name":target_name
+                    };
+                    axios.post("http://79cc3a77.ngrok.io/caclu",result).then((res) => {
+                        this.redraw(res);
+                        this.process_status = false;
+                        this.calcu_dialog_status = false;
+                    });
+                    // reader.readAsText(this.file);
+                    // reader.onload = function (e) {
+                    //
+                    // }
                 } catch (err) {
-                    this.snackbar_contorl(true,"error","Please select the .csv file")
+                    console.log(err)
+                    this.process_status = false;
+                    this.snackbar_contorl(true,"error","Exception: "+err)
                 }
             },
             // check_snack_bar_status()
@@ -703,6 +768,7 @@
                     let target_player = this.target_player_name;
                     let player_item = "";
                     let total_damage = [];
+                    let dps_skill = [];
                     let name_list = [];
                     let skill_damage = [];
                     let skill_list = [];
@@ -719,6 +785,9 @@
                     player_item["Skill"].forEach(function(item) {
                         skill_list.push(item["Skill Name"]);
                         skill_damage.push(item["Damage"]);
+                    });
+                    player_item["DPS skill detail"].forEach(function (item,index) {
+                        dps_skill.push(index+ ": " +item)
                     });
                     this.return_data = res;
                     this.player_list = new_player_list;
@@ -785,7 +854,8 @@
                             borderColor: "#40475D"
                         },
                         xaxis: {
-                            type: 'category',
+                            // type: 'category',
+                            categories: dps_skill,
                             labels: {
                                 show: false,
                             },
@@ -795,6 +865,9 @@
                             axisBorder: {
                                 color: "#333"
                             }
+                        },
+                        dataLabels: {
+                            enabled: false,
                         },
                         tooltip: {
                             theme: "dark",
@@ -845,7 +918,7 @@
                         }];
                     this.snackbar_contorl(true,"success","Redraw success");
                 } catch (err) {
-                    this.snackbar_contorl(true,"error","Redraw fail");
+                    this.snackbar_contorl(true,"error","Redraw fail: "+err);
                 }
 
             },
