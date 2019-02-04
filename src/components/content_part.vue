@@ -383,6 +383,7 @@
         components: {
         },
         data: ()=> ({
+            back_end_url:"http://ec2-13-250-36-42.ap-southeast-1.compute.amazonaws.com:5000",
             play_status:true,
             stop_status:false,
             reset_status:true,
@@ -598,7 +599,7 @@
                     "id":this.record_id
                 }
                 this.process_status = true;
-                axios.post("http://79cc3a77.ngrok.io/exist_record",req_val).then((res) => {
+                axios.post(this.back_end_url+"/exist_record",req_val).then((res) => {
                     if (res.data["status"] === true){
                         this.init_setting_status = false;
                         this.redraw(res)
@@ -682,7 +683,7 @@
                             "language":language,
                             "target_name":target_name
                         };
-                        axios.post("http://79cc3a77.ngrok.io/create_new_record",result).then((res) => {
+                        axios.post(this.backend_url+"/create_new_record",result).then((res) => {
                             this.init_setting_status = false;
                             this.process_status = false;
                             this.calcu_dialog_status = true;
@@ -719,7 +720,7 @@
                         "end_time":this.end_time,
                         "target_name":target_name
                     };
-                    axios.post("http://79cc3a77.ngrok.io/caclu",result).then((res) => {
+                    axios.post(this.backend_url+"/caclu",result).then((res) => {
                         this.redraw(res);
                         this.process_status = false;
                         this.calcu_dialog_status = false;
