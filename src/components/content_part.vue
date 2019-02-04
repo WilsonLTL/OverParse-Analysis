@@ -355,7 +355,7 @@
                     </v-snackbar>
                 </v-layout>
             </v-container>
-            <v-speed-dial v-model="fab" dark fixed bottom right fab :transition="transition">
+            <v-speed-dial v-model="fab" dark fixed bottom right fab transition="slide-y-reverse-transition">
                 <v-btn slot="activator" v-model="fab" color="blue darken-2" dark fab>
                     <v-icon>fas fa-cog</v-icon>
                     <v-icon>fas fa-file</v-icon>
@@ -383,7 +383,8 @@
         components: {
         },
         data: ()=> ({
-            back_end_url:"http://ec2-13-250-36-42.ap-southeast-1.compute.amazonaws.com:5000",
+            // back_end_url:"http://www.overparse-analysis.com:5000",
+            back_end_url:"http://0.0.0.0:5000",
             battle_time:"-",
             barchartOptions: {
                 bar_color: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D10CE8', '#9E9D24', '#D10CE8', '#D10CE8', '#D10CE8'],
@@ -450,6 +451,7 @@
             donutseries: [0],
             dps: [0],
             end_time:0,
+            fab:true,
             file: "",
             fileName: "",
             init_setting_status: false,
@@ -671,14 +673,13 @@
                 this.snackbar_text = text
             },
             create_new_record () {
-                console.log("Create")
                 let textType = /text.*/;
                 let language = this.skill_language;
                 let target_name = this.target_player_name
                 this.process_status = true;
                 try{
                     let reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function () {
                         let result = {
                             'data':reader.result.toString(),
                             "language":language,
@@ -701,14 +702,12 @@
                     // }
 
                 }catch (err) {
-                    console.log(err)
                     this.process_status = false;
                     this.snackbar_contorl(true,"error","Exception: "+err)
                 }
 
             },
             cal_new_record () {
-                console.log("Enter")
                 // let textType = /text.*/;
                 let language = this.skill_language;
                 let target_name = this.target_player_name
@@ -725,13 +724,13 @@
                         this.redraw(res);
                         this.process_status = false;
                         this.calcu_dialog_status = false;
+                        this.select_time_status = false;
                     });
                     // reader.readAsText(this.file);
                     // reader.onload = function (e) {
                     //
                     // }
                 } catch (err) {
-                    console.log(err)
                     this.process_status = false;
                     this.snackbar_contorl(true,"error","Exception: "+err)
                 }
@@ -775,7 +774,7 @@
                     let skill_damage = [];
                     let skill_list = [];
                     let new_player_list = [];
-                    let max_damage = 0
+                    // let max_damage = 0
                     res.data["player_detail"].forEach(function (item){
                         if(item["Name"] === target_player){
                             player_item = item

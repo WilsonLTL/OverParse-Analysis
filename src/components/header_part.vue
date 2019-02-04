@@ -80,7 +80,7 @@
                                         <div slot="header"><v-icon class="white--text">fas fa-file-alt</v-icon>&nbsp Init New Record</div>
                                         <v-card class="white--text" style="background-color: #1b213b">
                                             <v-card-text>
-                                                1. Press the &nbsp<v-icon class="white--text">fas fa-cog</v-icon>&nbsp <br >
+                                                1. Press the &nbsp<v-icon class="white--text">fas fa-cog</v-icon>&nbsp, &nbsp<v-icon class="white--text">fas fa-upload</v-icon>&nbsp<br >
                                                 2. Press the &nbsp<v-icon class="white--text">fas fa-play</v-icon>&nbsp when you start your mission. (Before you teleport) <br >
                                                 3.1 Press the &nbsp<v-icon class="white--text">fas fa-stop</v-icon>&nbsp when you finish the mission. <br >
                                                 3.2 Press the &nbsp<v-icon class="white--text">fas fa-mouse-pointer</v-icon>&nbsp to select the time by yourself <br >
@@ -140,7 +140,7 @@
                                         <div slot="header"><v-icon class="white--text">fas fa-file-alt</v-icon>&nbsp 初始化你的記錄</div>
                                         <v-card class="white--text" style="background-color: #1b213b">
                                             <v-card-text>
-                                                1. 按下 &nbsp<v-icon class="white--text">fas fa-cog</v-icon>&nbsp <br >
+                                                1. 按下 &nbsp<v-icon class="white--text">fas fa-cog</v-icon>&nbsp, &nbsp<v-icon class="white--text">fas fa-upload</v-icon>&nbsp <br >
                                                 2. 在你開始任務的時候按下 &nbsp<v-icon class="white--text">fas fa-play</v-icon>&nbsp . (在傳送之前) <br >
                                                 3.1 在你完成任務的時候按下 &nbsp<v-icon class="white--text">fas fa-stop</v-icon>&nbsp . <br >
                                                 3.2 你亦可以按下 &nbsp<v-icon class="white--text">fas fa-mouse-pointer</v-icon>&nbsp 自己選擇時間<br >
@@ -244,7 +244,7 @@
     import axios from 'axios'
     export default {
         data: ()=> ({
-            backend_url:"http://ec2-54-255-187-37.ap-southeast-1.compute.amazonaws.com:5000",
+            // backend_url:"http://ec2-54-255-187-37.ap-southeast-1.compute.amazonaws.com:5000",
             // backend_url:"http://127.0.0.1:3000",
             dialog:false,
             readme:true,
@@ -253,7 +253,7 @@
             reg_access_token:"",
             reg_player_card:{
                 player_name:"",
-                player_image:"http://hbimg.b0.upaiyun.com/64f61a9a25533284f8616c74eb76a7dc7f275616df3cb-PMcIkP_fw658",
+                player_image:"",
                 player_password:"",
                 player_access_token:"PSO2-ARKS000"
             },
