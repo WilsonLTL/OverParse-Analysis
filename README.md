@@ -16,7 +16,7 @@ Overparse analysis develop base on [OverParse/TyroneSama](https://github.com/Tyr
 <br >
 Overparse analysis建基於[OverParse/TyroneSama](https://github.com/TyroneSama/OverParse) 與 [OverParse/Remon-7L](https://github.com/Remon-7L/OverParse), 以 Vue (前端) 與 Python (後端)建設,針對每場戰鬥, 提供更多可用資料分析與數據視像化 <br >
 
-## Tutorial Video
+## Tutorial Video:
 https://youtu.be/9LBvk3Rx704
 
 ## Conditions of Use:<br >
