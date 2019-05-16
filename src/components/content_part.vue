@@ -28,6 +28,7 @@
                                 <input type="file" style="display: none" ref="image" accept="csv/*" v-on:change="onFilePicked">
                                 <v-select dark v-model="skill_language" :items="skill_language_list" label="Language" prepend-icon='fas fa-language' outline></v-select>
                                 <v-text-field outline dark label="Your Character Name" v-model='target_player_name' prepend-icon='fas fa-smile-wink'></v-text-field>
+                                <!--<v-select v-model="target_player_name" :items="csv_player_list" label="Your Character Name" required></v-select>-->
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -383,8 +384,8 @@
         components: {
         },
         data: ()=> ({
-            // back_end_url:"http://www.overparse-analysis.com:5000",
-            back_end_url:"http://0.0.0.0:5000",
+            // back_end_url:"http://ec2-52-221-8-203.ap-southeast-1.compute.amazonaws.com:5000",
+            back_end_url:" http://0.0.0.0:5000",
             battle_time:"-",
             barchartOptions: {
                 bar_color: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D10CE8', '#9E9D24', '#D10CE8', '#D10CE8', '#D10CE8'],
@@ -429,6 +430,7 @@
             change_target_player_status: false,
             criper: [0],
             csv_text:"",
+            csv_player_list:[],
             datacollection: null,
             donutchartOptions: {
                 chart:{
@@ -672,6 +674,9 @@
                 this.snackbac_color = color;
                 this.snackbar_text = text
             },
+            sleep: function(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
             create_new_record () {
                 let textType = /text.*/;
                 let language = this.skill_language;
@@ -680,21 +685,36 @@
                 try{
                     let reader = new FileReader();
                     reader.onload = function () {
+                        this.fileURL = reader.result
                         let result = {
                             'data':reader.result.toString(),
                             "language":language,
                             "target_name":target_name
                         };
+                        // console.log(reader.result)
+                        // this.sleep(5000).then(()=>{
+                        //     console.log("Wake up");
+                        //     this.create_new_record()
+                        // })
                         axios.post(this.back_end_url+"/create_new_record",result).then((res) => {
                             this.init_setting_status = false;
                             this.process_status = false;
-                            this.calcu_dialog_status = true;
-                            this.record_id = res.data["ID"]
+                            this.calcu_dialog_status = false;
+                            this.record_id = res.data["ID"];
                             this.snackbar_contorl(true,"success","New record create success")
                             this.cal_new_record()
                         });
+
+                        reader.onerror = function (e) {
+                            console.log(e)
+                        }
                     }.bind(this);
+                    reader.onerror = function (e){
+                        console.log(e)
+                    }
+                    console.log(this.fileName)
                     reader.readAsText(this.file);
+
                     // if (this.file.type.match(textType)) {
                     //
                     // }else{
@@ -774,17 +794,19 @@
                     let skill_damage = [];
                     let skill_list = [];
                     let new_player_list = [];
+                    let damage = 0;
                     // let max_damage = 0
                     res.data["player_detail"].forEach(function (item){
                         if(item["Name"] === target_player){
-                            player_item = item
+                            player_item = item;
+                            damage = item["Damage"];
                         }
                         new_player_list.push(item["Name"]);
                         total_damage.push(item["Damage"]);
                         name_list.push(item["Name"]);
                     });
                     player_item["Skill"].forEach(function(item) {
-                        skill_list.push(item["Skill Name"]);
+                        skill_list.push(item["Skill Name"]+" - "+((item["Damage"]/damage) * 100).toFixed(1)+"%");
                         skill_damage.push(item["Damage"]);
                     });
                     player_item["DPS skill detail"].forEach(function (item,index) {
@@ -950,7 +972,7 @@
             },
             getRandomInt () {
                 return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-            }
+            },
         }
     }
 </script>

@@ -5,6 +5,9 @@
 <p align="center">
   <img src="https://i.imgur.com/c9j0Gmn.jpg">
 </p>
+<p align="center">
+  <img src="https://i.imgur.com/ote3vCb.png">
+</p>
 
 Warning: This tool violates the PSO2 Terms of Service. Please use caution and discretion.<br >
 警告: 此工具侵犯PSO2服務條款.請謹慎使用 <br >
